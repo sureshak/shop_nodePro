@@ -1,0 +1,112 @@
+
+	<div class="" ng-controller="dashboard_controller">
+			<nav class="navbar navbar-default navbar-custom" ng-if="currentUser.role=='doctor' || currentUser.role=='admin'">
+		<div class="container-fluid">
+			
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#/dashboard">Hello, {{currentUser.name}}</a>
+			</div>
+
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#/dashboard">My Patients <span class="sr-only">(current)</span></a></li>
+					<li><a href="#/add_doctors">Doctors</a></li>
+					<li><a href="#/dashboard">Dashboard</a></li>
+						<li ng-if="currentUser.role=='admin'"><a href="#/logs">Logs</a></li>
+				</ul>
+				<form class="navbar-form navbar-left" role="search">
+					<!-- <div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div> -->
+
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+		<div class="container">
+		<div class="panel panel-default">
+		  <div class="panel-body text-center">
+		   Add Patient Information
+		  </div>
+		</div>
+		<div class="alert alert-success alert-dismissible" role="alert" ng-if="showAlertPatient">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <strong>New Patient</strong> added successfully !.
+		</div>
+		<div id="login" class="col-lg-4 " style="margin-top:40px;">
+			<form role="form">
+			  <div class="form-group">
+			    <input type="text" class="form-control" id="email" placeholder = "Name" ng-model="newpatient.name">
+			  </div>
+			  <div class="form-group">
+			    <input type="number" class="form-control" id="pwd" placeholder = "Age" ng-model="newpatient.age">
+			  </div>
+			   <div class="form-group">
+			    <input type="number" class="form-control" id="pwd" placeholder = "Mobile" ng-model="newpatient.mobile">
+			  </div>
+			   <div class="form-group">
+			    <input type="text" class="form-control" id="pwd" placeholder = "Address" ng-model="newpatient.address">
+			  </div>
+			    <div class="form-group">
+			    	<input type="text" class="form-control" id="pwd" placeholder = "Nominess" ng-model="newpatient.nominess"> 
+			  </div>
+			  <div class="form-group">
+			    	<input type="text" class="form-control" id="pwd" placeholder = "Admission Date" ng-model="newpatient.admissionDate">
+			  </div>
+			   <div class="form-group">
+			    	<input type="text" class="form-control" id="pwd" placeholder = "Admission Details" ng-model="newpatient.admissionDetails">
+			  </div>
+			   <div class="form-group">
+			    	<input type="email" class="form-control" id="pwd" placeholder = "Email" ng-model="newpatient.email">
+			  </div>
+			   <div class="form-group">
+			    	<input type="password" class="form-control" id="pwd" placeholder = "Password" ng-model="newpatient.password">
+			  </div>
+			  	</form>
+		</div>
+
+       <div id="login" class="col-lg-4 " style="margin-top:40px; margin-bottom:40px;">
+			<form role="form">		
+				 
+		<div class="form-group">
+  		    <select class="form-control" ng-model="newpatient.doctorName" ng-options="doctor.email as doctor.name for doctor in doctorsList">
+  		    </select>
+
+			<input type="text" class="form-control" id="pwd" placeholder = "Doctor Name(Choose above)" disabled ng-model="newpatient.doctorName">
+		 </div>
+			   <div class="form-group">
+			    	<input type="text" class="form-control" id="pwd" placeholder = "Hospital Name" ng-model="newpatient.hospitalName">
+			  </div>
+			   <div class="form-group">
+				  <label for="comment">Problem Identified:</label>
+				  <textarea class="form-control" rows="5" id="comment" ng-model="newpatient.problems"></textarea>
+				</div>
+			  <div class="form-group">
+				  <label for="comment">Drugs:</label>
+				  <textarea class="form-control" rows="5" id="comment" ng-model="newpatient.drugs"></textarea>
+				</div>
+			   <div class="form-group">
+				  <label for="comment">Dosage:</label>
+				  <textarea class="form-control" rows="5" id="comment" ng-model="newpatient.dosage"></textarea>
+				</div>
+			  
+
+			  <button type="submit" class="btn btn-default" ng-click="addPatient()">Save New Patient</button>
+			 
+			</form>
+		</div>
+
+	</div>
+
+</div>

@@ -1,0 +1,69 @@
+
+
+<div class="container" ng-controller="login_controller">
+
+
+	<div class="alert alert-danger" role="alert" ng-if="message.trim().length > 0">{{message}}</div>
+<!-- 
+	<div id="login" class="col-lg-4  col-lg-offset-4" style="margin-top:40px;">
+		<form role="form" name="loginForm" novalidate autocomplete="off">
+			
+			<div class="form-group">
+				<input type="email" class="form-control" id="email"  name="email"  placeholder = "Email" ng-model="Login.email" required>
+				<div class="field-message" ng-messages="loginForm.email.$error" ng-if='loginForm.email.$dirty' ng-cloak>
+					<div ng-message="required">Email is required</div>
+					<div ng-message="email">Must be a valid email</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" id="pwd" name="pwd" placeholder = "Password" ng-model="Login.password" required>
+				<div class="field-message" ng-messages="loginForm.pwd.$error" ng-if='loginForm.pwd.$dirty' ng-cloak>
+					<div ng-message="required">Email is required</div>
+					<div ng-message="pwd">Must be a valid email</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-default" ng-click="login()" ng-disabled="loginForm.$invalid">Login</button>
+			
+		</form>
+	</div>
+ -->
+
+
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true" style="margin-top:50px">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+         
+          <h1 class="text-center">Login</h1>
+      </div>
+      <div class="modal-body">
+          <form class="form col-md-12 center-block"  name="loginForm">
+           
+			<div class="form-group">
+				<input type="email" class="form-control" id="email"  name="email"  placeholder = "Email" ng-model="Login.email" required>
+				<div class="field-message" ng-messages="loginForm.email.$error" ng-if='loginForm.email.$dirty' ng-cloak>
+					<div ng-message="required">Email is required</div>
+					<div ng-message="email">Must be a valid email</div>
+				</div>
+			</div>
+           <div class="form-group">
+				<input type="password" class="form-control" id="pwd" name="pwd" placeholder = "Password" ng-model="Login.password" required>
+				<div class="field-message" ng-messages="loginForm.pwd.$error" ng-if='loginForm.pwd.$dirty' ng-cloak>
+					<div ng-message="required">Email is required</div>
+					<div ng-message="pwd">Must be a valid email</div>
+				</div>
+			</div>
+            
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12">
+        			<button type="submit" class="btn btn-default" ng-click="login()" ng-disabled="loginForm.$invalid">Login</button>
+
+		  </div>	
+      </div>
+  </div>
+  </div>
+</div>
+
+</div>

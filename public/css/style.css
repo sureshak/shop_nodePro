@@ -1,0 +1,76 @@
+.thumb {
+    width: 24px;
+    height: 24px;
+    float: none;
+    position: relative;
+    top: 7px;
+}
+
+form .progress {
+    line-height: 15px;
+}
+}
+
+.progress {
+    display: inline-block;
+    width: 100px;
+    border: 3px groove #CCC;
+}
+
+.progress div {
+    font-size: smaller;
+    background: orange;
+    width: 0;
+}
+
+body {
+  background-color:#ecf0f1;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 200%;
+}
+
+.searchStyle {
+    margin-bottom: 50px !important;
+}
+
+.searchCenter {
+        padding-left: 38px;
+}
+
+.red{
+ 
+  color:red !important;
+}
+
+.navbar-custom {
+    background-color:#2c3e50;
+    color:#ffffff;
+    border-radius:0;
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color:#fff;
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color:transparent;
+}
+.navbar-custom .navbar-brand {
+    color:#eeeeee;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+}
+
+.btn-default {
+    color: #fff;
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+}
+
+.panel-default {
+    border-color: #2c3e50;
+}

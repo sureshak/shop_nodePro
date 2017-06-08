@@ -1,0 +1,105 @@
+
+<div class="" ng-controller="dashboard_controller" ng-init="loadLogs()">
+	<nav class="navbar navbar-default navbar-custom" ng-if="currentUser.role=='doctor' || currentUser.role=='admin'">
+		<div class="container-fluid">
+			
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#/dashboard">Hello, {{currentUser.name}}</a>
+			</div>
+
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li ><a href="#/dashboard">My Patients <span class="sr-only">(current)</span></a></li>
+					<li><a href="#/add_doctors">Doctors</a></li>
+					<li  ng-if="currentUser.role=='admin'"><a href="#/logs">Logs</a></li>
+					<li class="active"><a href="#/notification">Notification <span class="badge" ng-if="currentUser.role=='doctor' && badgeSize > 0">{{badgeSize}}</span></a></li>
+				</ul>
+				<form class="navbar-form navbar-left" role="search">
+					<!-- <div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				-->
+			</form>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
+
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container">
+<div ng-if="currentUser.role=='admin'" >
+	<div class="row">
+		<div class="form-group col-sm-3">
+			<select class="form-control" ng-model="newpatient.doctorName" ng-options="doctor.email as doctor.name for doctor in doctorsList">
+			</select>
+
+			<input type="text" class="form-control" id="pwd" placeholder = "Doctor Name(Choose above)" disabled ng-model="newpatient.doctorName">
+		</div>
+		<div class="col-sm-4">
+			<textarea row='5' col='3' ng-model="notificationMessage">
+
+			</textarea>
+			
+			<button class='btn btn-default' ng-click='saveNotifications(notificationMessage)'>Save Notifications</button>
+		</div>
+		<div>
+		</div>	
+	</div>
+	<div class='row' style='margin-top:50px'>
+		<form class="navbar-form navbar-left searchCenter" role="search" >
+			 	<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search" ng-model="searchKeyword">
+				</div>
+		</form>
+			<div class='col-sm-6'>
+				<table class='table bordered'>
+					<tr>
+						<th>Doctor Name</th>
+						<th>Notification Message</th>
+						<th>Status</th>
+					</tr>
+					<tr ng-repeat = 'item in ListOfNotification | filter:searchKeyword'>
+						<td>{{item.doctorEmail}}</td>
+						<td>{{item.message}}</td>
+						<td ng-if='item.flag' class='btn-xs btn-success'>Action Made</td>
+						<td ng-if='!item.flag' class='btn-xs btn-danger'>Action Pending</td>
+					</tr>
+				</table>
+
+			</div>
+	</div>
+</div>
+
+<div class="row" ng-if="currentUser.role=='doctor'">
+	<form class="navbar-form navbar-left searchCenter" role="search">
+			 	<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search" ng-model="searchKeyword">
+				</div>
+		</form>
+	<div class='col-sm-6'>
+		
+				<table class='table'>
+					<tr>
+						<th>Message</th>
+						<th>Action</th>
+					</tr>
+					<tr ng-repeat = 'item in ListOfDoctorNotification | filter:searchKeyword'>
+						<td>{{item.message}}</td>
+						<td><a href="javascript:void(0)" ng-click="markAsDone(item)">Done</a></td>
+					</tr>
+				</table>
+
+			</div>
+</div>
+
+</div>
+
+</div>

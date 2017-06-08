@@ -1,0 +1,354 @@
+
+<nav class="navbar navbar-default navbar-custom"  ng-controller="dashboard_controller">
+        <div class="container-fluid">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Hello, {{currentUser.name}}</a>
+            </div>
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/dashboard">Dashboard</a></li>
+                    <li><a href="#/graph">Graph</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container" ng-controller="graph_controller" ng-init="getHeartData()">
+
+
+    <!-- <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div> -->
+<!--     <div class="panel panel-default col-sm-6">
+      <div class="panel-heading">Heart Rate Monitor</div>
+      <div class="panel-body">
+         <canvas id="line" class="chart chart-line" chart-data="data"
+         chart-labels="labels"  
+         chart-click="onClick" >
+     </canvas> 
+
+ </div>
+</div> -->
+<div class="panel panel-default col-sm-6">
+  <div class="panel-heading">Heart Beat Monitor
+  </div>
+  <div class="panel-body">
+      <canvas id="myChart" height="250" width="500"></canvas>
+  </canvas> 
+
+</div>
+</div>
+
+<div class="panel panel-default col-sm-6">
+  <div class="panel-heading">Heart Rate Monitor</div>
+  <div class="panel-body">
+      <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  </canvas> 
+
+</div>
+</div>
+
+
+<script type="text/javascript">
+$(function () {
+    $(document).ready(function() {
+         var _url = "/api/heart/last"
+
+                setInterval(function(){ 
+                        $.ajax({
+                        url: _url,
+                        type: 'GET',
+                        async: false,
+                        cache: false,
+                        error: function(){
+                            console.log("Fetching ajax error");
+                            flag = true;
+                        },
+                        success: function(msg){ 
+                           //console.log(msg)
+                           if(msg.rate > 100) {
+                                var snd = new Audio("js/beep-06.wav"); // buffers automatically when created
+                                snd.play();
+                           }
+                        }
+                    });
+
+                }, 3000);
+                
+
+
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+        
+        var chart;
+        $('#container').highcharts({
+            chart: {
+                type: 'line',
+                animation: Highcharts.svg, // don't animate in old IE
+                marginRight: 10,
+                events: {
+                    load: function() {
+                        
+                        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function() {
+                            var x = (new Date()).getTime(), // current time
+                            y = Math.random();
+
+                            series.addPoint([x, y], true, true);
+                        }, 1000);
+                    }
+                }
+            },
+            title: {
+                text: 'Live Heart data'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Value'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+
+                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                    Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Your Heart Beat',
+                data: (function() {
+                    // generate an array of random data
+                    var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+                    
+                    // for (i = -19; i <= 0; i++) {
+                    //     data.push({
+                    //         x: time + i * 1000,
+                    //         y: Math.random()
+                    //     });
+                    // }
+
+                    var mobile = "9884110869";
+                    var url = "http://54.172.41.133:8080/heart/api/heart/"+mobile
+                    console.log("fetching data for : " + url)
+                    var flag=false;
+
+                        $.ajax({
+                        url: url,
+                        type: 'GET',
+                        async: false,
+                        cache: false,
+                        timeout: 30000,
+                        error: function(){
+                            console.log("Fetching ajax error");
+                            flag = true;
+                        },
+                        success: function(msg){ 
+                           //console.log(msg)
+
+                           for(i in msg) {
+
+                          //  $('#currentbeep').text(msg[i].rate);
+                            if(msg[i] > 100 ){
+                                heartBeep();
+
+                            }
+                                data.push({
+                                    x: time + i * 1000,
+                                    y:parseInt(msg[i].rate)
+                                });
+                           }
+                           
+                           if(data.length <=0 || flag ) {
+                            flag = true;
+                                for (i = -19; i <= 0; i++) {
+                                    data.push({
+                                        x: time + i * 1000,
+                                        y: Math.random()
+                                    });
+                                }
+                           }
+                        }
+                    });
+
+
+                    
+                    return data;
+                })()
+            }]
+        });
+
+
+});
+
+    function heartBeep() {
+        var snd = new Audio("js/beep-06.wav"); // buffers automatically when created
+        snd.play();
+    }
+
+    $('#beep').on('click',function(){
+        console.log("dasd")
+        var snd = new Audio("js/beep-06.wav"); // buffers automatically when created
+        snd.play();
+    })
+});
+
+function getActualData() {
+
+    var flag = false;
+    var actualData = [];
+    var mobile = "9884110869";
+    var url = "http://54.172.41.133:8080/heart/api/heart/"+mobile
+    console.log("fetching data for : " + url)
+     
+     $.ajax({
+        url: url,
+        type: 'GET',
+        async: false,
+        cache: false,
+        timeout: 30000,
+        error: function(){
+            console.log("Fetching ajax error");
+            flag = true;
+        },
+        success: function(msg){ 
+           //console.log(msg)
+
+           for(i in msg) {
+                actualData.push(parseInt(msg[i].rate));
+           }
+           if(actualData.length <=0 ) {
+            flag = true;
+           }
+        }
+    });
+    
+    
+    if(flag) {
+         for (var m = 0; m < 20; m++){
+            actualData.push(45 + parseInt(Math.random() * 35))
+         }
+    }
+   //console.log(actualData)
+    return actualData;
+}
+
+
+var ANIMATIONSTEPS = 200;
+
+var myLineChart;
+var labels;
+var animationStep;
+setInterval(function () {
+    if (myLineChart === undefined) {
+        var actualData = getActualData();
+        
+        // if we have only a few data points interpolate to fill out enough points to make the animation smooth
+        var interpolationSteps = Math.ceil(ANIMATIONSTEPS / actualData.length);
+        labels = []
+        var data = []
+        var blankData = []
+        for (var i = 0; i < (actualData.length - 1); i++) {
+            labels.push('')
+            data.push(actualData[i])
+            blankData.push(null)
+            
+            // push interpolation
+            var difference = actualData[i + 1] - actualData[i];
+            var interpolationStep = 1 / interpolationSteps;
+            for (var j = 1; j < interpolationSteps; j++) {
+                labels.push('')
+                data.push(actualData[i] + difference * Chart.helpers.easingEffects["linear"](j * interpolationStep));
+                blankData.push(null)
+            }
+        }
+        labels.push('')
+        data.push(actualData[i])
+        blankData.push(null)
+        
+        var data = {
+            labels: labels,
+            datasets: [
+            {
+                strokeColor: "rgba(243, 118, 27, 1)",
+                data: blankData
+            },
+            {
+                strokeColor: "transparent",
+                data: data
+            }
+            ]
+        };
+
+        
+        
+        var ctx = document.getElementById("myChart").getContext("2d");
+        myLineChart = new Chart(ctx).Line(data, {
+            animation: false,
+            datasetFill: false,
+            pointDot: false,
+            datasetStrokeWidth: 5,
+            showTooltips: false,
+            scaleOverride: true,
+            scaleSteps: 12,
+            scaleStepWidth: 5,
+            scaleStartValue: 30,
+            scaleShowVerticalLines: false,
+            scaleShowLabels: false,
+        });
+        
+        animationStep = 0;
+    }
+    
+    // the actual animation
+    myLineChart.datasets[0].points[animationStep].value = myLineChart.datasets[1].points[animationStep].value
+    myLineChart.update();
+    animationStep++;
+    
+    // start new cycle
+    if (animationStep >= labels.length) {
+        myLineChart.destroy();
+        myLineChart = undefined;
+    }
+}, 10)
+
+function beep() {
+    var snd = new Audio("js/beep-06.wav"); // buffers automatically when created
+    snd.play();
+}
+
+
+
+</script>

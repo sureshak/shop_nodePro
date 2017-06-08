@@ -1,0 +1,90 @@
+
+
+<div class="" ng-controller="dashboard_controller">
+	<nav class="navbar navbar-default  navbar-custom" ng-if="currentUser.role=='doctor' || currentUser.role=='admin'">
+		<div class="container-fluid">
+			
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#/dashboard">Hello,  {{currentUser.name}}</a>
+			</div>
+
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#/dashboard">My Patients <span class="sr-only">(current)</span></a></li>
+					<li><a href="#/add_doctors">Doctors</a></li>
+					<li ng-if="currentUser.role=='admin'"><a href="#/logs">Logs</a></li>
+					<li><a href="#/notification">Notification <span class="badge" ng-if="currentUser.role=='doctor' && badgeSize > 0">{{badgeSize}}</span></a></li>
+				</ul>
+				<form class="navbar-form navbar-left" role="search">
+				<!-- 	<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				-->
+			</form>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<nav class="navbar navbar-default navbar-custom" ng-if="currentUser.role=='user'">
+	<div class="container-fluid">
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Hello</a>
+		</div>
+
+
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
+
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container">
+
+<!-------------------------->
+
+<div class=" col-lg-3" ng-if="currentUser.role=='doctor' || currentUser.role=='admin'">
+	 <select class="form-control" ng-model="newpatient.doctorName" ng-options="doctor.email as doctor.name for doctor in doctorsListShare">
+  </select>
+  	
+</div>
+
+<div class="col-lg-3" ng-if="currentUser.role=='doctor' || currentUser.role=='admin'">
+	<div class="list-group ">
+		<a href="#" class="list-group-item disabled">
+			List of Patients
+		</a>
+		<a href="javascript:void(0)" class="list-group-item" ng-click='sharePatient($index)' ng-repeat="patient in ListofPatients | filter: searchKeyword" ng-class="{red: $index == selected}">{{patient.name}}</a>
+	</div>
+</div>
+<div class="col-lg-3" ng-if="showShareButton">
+	<button class='btn btn-default' ng-click='share()'>Share</button>
+</div>
+
+
+
+
+<div>
+</div>
+
+</div>
