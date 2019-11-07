@@ -3,7 +3,7 @@
   "dedscription": "ecommerse-backend",
   "dependencies": {
     "express": "~4.0.0",
-    "mongoose": "4.2.8",
+    "mongoose": "5.7.8",
     "body-parser": "*",
     "mongoose-unique-validator": "*",
     "passport": "~0.2.0",
